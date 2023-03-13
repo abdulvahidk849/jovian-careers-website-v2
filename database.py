@@ -29,4 +29,4 @@ def load_job_from_db(id):
     if len(rows) == 0:
       return None
     else:
-      return [dict(row) for row in rows]
+      return rows[0]
