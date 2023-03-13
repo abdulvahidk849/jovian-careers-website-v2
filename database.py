@@ -21,16 +21,12 @@ def load_jobs_from_db():
     return result_dicts
 
 def load_job_from_db(id):
-  value = []
-  value.append(id)
   with engine.connect() as conn:
-    query = "SELECT * FROM jobs WHERE id = %s"
-    result = conn.execute(query,value)
-    column_names = result.keys()
-    result_dicts = []
-    
-    rows = result.all()
+    result = conn.execute(text(f"SELECT * FROM jobs WHERE id = {id}"))
+    rows = []
+    for row in result.all():
+      rows.append(row._mapping)
     if len(rows) == 0:
       return None
     else:
-      return result_dicts.append(dict(zip(column_names,rows[0])))
+      return [dict(row) for row in rows]
