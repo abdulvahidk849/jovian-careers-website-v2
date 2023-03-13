@@ -12,7 +12,10 @@ engine = create_engine(
 def load_jobs_from_db():
   with engine.connect() as conn:
     result = conn.execute(text("select * from jobs"))
-    jobs = []
+    column_names = result.keys()
+    
+    result_dicts = []
+    
     for row in result.all():
-      jobs.append(dict(row))
-    return jobs
+      result_dicts.append(dict(zip(column_names, row)))
+    return result_dicts
